@@ -130,7 +130,7 @@ retrieveTracks()
   selectGenre(genre) {
     return new Promise((pass, fail) => {
       this.arr.length = 0;
-      firebase.database().ref("Registrations").on('value', (data: any) => {
+      firebase.database().ref("Registration").on('value', (data: any) => {
         let register = data.val();
         console.log(register);
         var keys2: any = Object.keys(register);

@@ -142,7 +142,8 @@ condition;
     email:this.email,
     date:date,
     time:time,
-    key:this.userKey
+    key:this.userKey,
+    check:false
     
 
  
@@ -153,7 +154,8 @@ condition;
         email:this.djEmail,
         date:date,
         time:time,
-        key:this.djKey
+        key:this.djKey,
+        check:false
     
 
      

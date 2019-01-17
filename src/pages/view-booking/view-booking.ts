@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { ChatroomPage } from '../chatroom/chatroom';
-
+import firebase from "firebase";
 /**
  * Generated class for the ViewBookingPage page.
  *
@@ -49,6 +49,8 @@ export class ViewBookingPage{
   this.key=this.bookings.key;
   this.city = this.bookings.city;
   this.usersKey=this.bookings.userskey;
+  
+ 
   this.fanMsg="Would like to chat with you, please respond";
 
   console.log("users key ")
@@ -59,13 +61,46 @@ export class ViewBookingPage{
   }
 
   back(){
-    this.view.dismiss();
+   
   }
 
   chatroom(){
+    //  alert("yes")
+    //   firebase.database().ref('inbox/'+this.id).child(this.key).update({
+    //     check:true,
+    //     date:this.fanDate,
+    //     fanEmail:this.fanEmail,
+    //     key:this.usersKey,
+    //     name:this.fanEmail,
+    //     time:this.fanTime,
+      
+    //   })
+
+
+
+
+      firebase.database().ref('Bookings/'+this.id).child(this.key).set({
+        check:true,
+        date:this.fanDate,
+        fanEmail:this.fanEmail,
+        key:this.usersKey,
+        name:this.fanEmail,
+        time:this.fanTime,
+      
+      }).then(data=>{
+      
+      })
+      // firebase.database().ref('bookings/'+this.id).child(this.key).update({
+      //   check:true
+      // })
+
       console.log(this.usersKey);
 
+
+
      this.navCtrl.push(ChatroomPage,{theuserkey:this.usersKey})
+
+     this.view.dismiss();
       
   }
 

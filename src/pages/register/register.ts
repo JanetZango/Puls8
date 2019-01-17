@@ -68,7 +68,7 @@ export class RegisterPage {
         
         }
       
-        firebase.database().ref("Registrations/" + userID).set(this.registrationObj).then(()=>{
+        firebase.database().ref("Registration/" + userID).set(this.registrationObj).then(()=>{
           
           firebase
           .database()

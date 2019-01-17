@@ -9,6 +9,7 @@ import { LoginPage } from '../login/login';
 import { ViewBookingPage } from '../view-booking/view-booking';
 import { UserProfilePage } from '../user-profile/user-profile';
 import moment from 'moment';
+import { ChatroomPage } from '../chatroom/chatroom';
 /**
  * Generated class for the ProfilePage page.
  *
@@ -46,7 +47,7 @@ export class ProfilePage {
   picture;
   globalPic=[];
   role;
-
+status;
   
   commentuserid;
   commentuserpic;
@@ -88,6 +89,14 @@ export class ProfilePage {
           let commentsinfor = data.val();
           console.log("this are the comments");
           console.log( commentsinfor);
+
+          if(commentsinfor.length == 0){
+
+           this.status=true;
+
+          }else{
+            this.status=false;
+          }
         
           if(data.val() != null ||data.val() != undefined ){
 
@@ -324,6 +333,7 @@ export class ProfilePage {
               let key=bookingInfor[k].key;
               
               console.log(bookingInfor[k].key);
+            
 
               
             this.db.retriveProfilePicture(key).on('value', (data) => {
@@ -349,7 +359,7 @@ export class ProfilePage {
                 userKey:bookingInfor[k].key,
                 msg: this.displayMsg,
                image:this.picture,
-
+               check:bookingInfor[k].check,
                 key: k,
                 count: this.count++
 
@@ -411,6 +421,8 @@ export class ProfilePage {
         console.log('User has not sign in');
       }
     });
+
+  
   }
 
   back() {
@@ -418,6 +430,7 @@ export class ProfilePage {
   }
 
   viewBooking(a) {
+
     let fanName = this.bookingArr[a].fanName;
     let fanEmail = this.bookingArr[a].fanEmail;
     let fanMsg = this.bookingArr[a].msg;
@@ -426,6 +439,11 @@ export class ProfilePage {
     let key = this.bookingArr[a].userKey;
     let keyid =this.bookingArr[a].key;
     let city = this.bookingArr[a].city;
+    let check = this.bookingArr[a].check;
+
+ 
+
+
 
     console.log(key);
     console.log("array");
@@ -465,9 +483,17 @@ export class ProfilePage {
             }
           
 
+let k =this.bookingArr[a].userKey
 
     const modalCtrl = this.modalCtrl.create(ViewBookingPage,{bookingDetails:obj});
-    modalCtrl.present();
+
+    if(check == false){
+      modalCtrl.present();
+   
+    }else{
+      this.navCtrl.push(ChatroomPage,{theuserkey:k});
+    }
+    
   }
 
   deleteTrack(i) {

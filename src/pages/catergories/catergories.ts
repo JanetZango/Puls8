@@ -235,6 +235,7 @@ export class CatergoriesPage {
   profilePage()
   {
 
+    console.log("in");
     
     if(this.condition==true)
       {
@@ -254,6 +255,7 @@ export class CatergoriesPage {
 
             this.role=profile.role;
             console.log(this.role);
+
             if(this.role=='Audience')
             {
              this.navCtrl.push(UserProfilePage);
@@ -554,7 +556,7 @@ export class CatergoriesPage {
              }
      });
 
-     this.city=null;
+     this.city==null;
      this.gender=null;
      this.genre=null;
 

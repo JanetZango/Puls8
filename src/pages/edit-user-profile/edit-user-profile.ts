@@ -19,97 +19,64 @@ import { NgForm } from '../../../node_modules/@angular/forms';
 export class EditUserProfilePage {
 
   arrProfile = new Array();
-
   fullname;
   email;
   pic;
+  genre;
   bio;
+  stagename;
+  g;
   role;
   city;
+  payment;
+  price;
+  rate;
   gender;
-  profileObj = {};
   id;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,   public db: DatabaseProvider,
+  url= "../../assets/imgs/user.png";
+  profileObj = {};
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public db: DatabaseProvider,
     public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController, private toastCtrl: ToastController) {
+    public alertCtrl: AlertController,
+    private toastCtrl: ToastController
+  ) {
+
   }
+  ionViewDidLoad(){
+    console.log("ViewLoad");
+    
+    this.id = firebase.auth().currentUser.uid;
+    firebase.database().ref('Registration/'+this.id).on("value",data=>{
+      console.log(data.val());
+      let infor = data.val();
+      this.fullname = infor.fullname;
+      this.stagename = infor.stagename;
+      this.city= infor.city;
+      this.price=infor.price;
+      this.payment = infor.payment;
+      this.bio = infor.bio;
+      this.genre=infor.genre;
+      this.gender= infor.gender;
+       this.email = infor.email
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EditUserProfilePage');
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("User has sign in");
-        this.id = firebase.auth().currentUser.uid;
+    })
 
-        firebase
-          .database()
-          .ref("Pic/" +this.id)
-          .on(
-            "value",
-            data => {
-              let infor = data.val();
-              if(infor != null && infor != ""){
-                this.url = infor.url;
-              }else{
-                console.log("no picture");
-                
-              }
-            },
-            error => {
-              console.log(error.message);
-            }
-          );
-
-        console.log(this.id);
-
-        firebase
-          .database()
-          .ref("Registration/" +this.id)
-          .on("value", (data: any) => {
-            let userDetails = data.val();
-
-            console.log(userDetails);
-
-            let userID = firebase.auth().currentUser.uid;
-
-            console.log(userID);
-
-            if (userDetails != null && userDetails != "") {
-              let obj = {
-                id: userID,
-                fullname: userDetails.fullname,
-                email: userDetails.email,
-                bio: userDetails.bio,
-                city:userDetails.city,
-                gender:userDetails.gender,
-              };
-
-              this.arrProfile.push(obj);
-
-              this.fullname = obj.fullname;
-              this.email = obj.email;
-              this.bio=obj.bio;
-              this.city=obj.city;
-              this.gender=obj.gender;
-             
-
-              console.log(this.fullname);
-              console.log(obj);
-            } else if (userDetails === null && userDetails === "") {
-              console.log("User doesnt exist");
-            }
-          });
-
-        this.arrProfile = [];
+    firebase.database().ref("Pic/" + this.id).on('value',data=>{
+      let picInfor = data.val();
+      console.log(picInfor.url);
+      if ( picInfor != null &&  picInfor != "") {
+        this.url =  picInfor.url;
       } else {
-        console.log("User has not sign in");
       }
-    });
-  }
+    })
 
-  url =  "../../assets/imgs/user.png";
-  insertImage(event: any){
+
+
+  }
+  insertImage(event: any) {
     if (event.target.files && event.target.files[0]) {
       let reader = new FileReader();
       reader.onload = (event: any) => {
@@ -119,74 +86,34 @@ export class EditUserProfilePage {
     }
   }
 
+  submit(form:NgForm){
 
-  submit(form: NgForm) {
-    let userID = firebase.auth().currentUser.uid;
-    console.log(form.value.fullname + " " +form.value.email);
-    console.log(form.value.bio+" " + " " +form.value.stagename);
+    const loader = this.loadingCtrl.create({
+      content: "Saving Information...",
+    
+    });
+    loader.present();
 
-    this.fullname=form.value.fullname ;
-    this.email=form.value.email;
-    this.bio=form.value.bio;
-    this.city=form.value.city;
-    this.gender=form.value.gender;
-  
-
-    // if(this.fullname!=null && this.fullname!=""&& this.email!=null && this.email!="" && this.bio!=null && this.bio!="" &&this.city!=null && this.city!="")
-    // {
-    //       this.role="Dj"
-    // }
-    // else{
-    //   this.role="Audience"
-    // }
-
-
-    let obj = {
+    firebase.database().ref('Registration/'+this.id).update({
       fullname: form.value.fullname,
       email: form.value.email,
       bio: form.value.bio,
-      city:form.value.city,
-      gender:this.gender,
-     
-
-    };
+      city: form.value.city,
+      gender: form.value.gender,
+   
+    })
     firebase
     .database()
-    .ref("Pic/" + userID)
+    .ref("Pic/" + this.id)
     .set({
-      url:this.url
-    });
-
-    this.arrProfile.push(obj);
-
+      url: this.url
+    })
  
+    loader.dismiss();
+      this.navCtrl.popTo(UserProfilePage);
 
 
-    this.db.update(userID, obj);
-
-    //firebase.database().ref('Registration/'+userID).update(obj);
-
-    let user = firebase.auth().currentUser;
-    user
-      .updateEmail(obj.email)
-      .then(() => {
-        // Update successful.
-        const toast = this.toastCtrl.create({
-          message: 'Information Successfuly Saved',
-          duration: 2000
-        });
-
-        toast.present();
-        // this.navCtrl.popToRoot();
-      })
-      .catch(function(error) {
-        // An error happened.
-        console.log(error);
-      });
-
-      this.navCtrl.pop();
-      
-    }
+  }
   remove(){
     this.url= "../../assets/imgs/user.png";
     firebase
@@ -195,6 +122,6 @@ export class EditUserProfilePage {
     .set({
       url: this.url
     })
+  }
 
-  }  
 }

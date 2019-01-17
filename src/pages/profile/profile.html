@@ -138,7 +138,7 @@
         <ion-list *ngSwitchCase="'reviews'" class="segcontainer__seg">
         
             <div class="commentslist" *ngIf="commentArr.length > 0">
-                <div class="chatBubble" *ngFor="let n of commentArr; let i = index; let odd = 'left'; let even = 'right'">
+                <div class="chatBubble" *ngFor="let n of commentArr ; let i = index; let odd = 'left'; let even = 'right'">
                     <!-- <img class="profile-pic even" src="{{n.pic}}"> -->
                     <div class="chat-bubble left">
                         <div class="message">{{n.comment}}</div>
@@ -159,7 +159,7 @@
                 </div>
             </div>
 
-            <button ion-button icon-only *ngIf="messagestate != 'sending'" class="comment" (click)="messagestate = 'sending'">
+            <button ion-button icon-only *ngIf="messagestate != 'sending' && commentnum >= 1" class="comment" (click)="messagestate = 'sending'">
                 <ion-icon name="chatbubbles"></ion-icon>
             </button>
             <chatbox (messageCreate)="onMessageAdded($event)" *ngIf="messagestate == 'sending'"></chatbox>

@@ -47,6 +47,7 @@ export class EditPage {
   }
   ionViewDidLoad(){
     console.log("ViewLoad");
+
     this.id = firebase.auth().currentUser.uid;
     firebase.database().ref('Registration/'+this.id).on("value",data=>{
       console.log(data.val());
@@ -86,6 +87,11 @@ export class EditPage {
   }
 
   submit(form:NgForm){
+    const loader = this.loadingCtrl.create({
+      content: "Saving Information...",
+    
+    });
+    loader.present();
 
     if(form.value.price >= 1  && form.value.price <=5000){
 
@@ -107,12 +113,8 @@ export class EditPage {
     .set({
       url: this.url
     })
-    const toast = this.toastCtrl.create({
-      message: 'Information Successfuly Saved',
-      duration: 2000
-    });
-
-    toast.present();
+   
+   
     
       this.navCtrl.popTo(ProfilePage);
 
@@ -135,6 +137,8 @@ export class EditPage {
     });
     prompt.present();
   }
+  loader.dismiss();
+
   }
   remove(){
     this.url= "../../assets/imgs/user.png";

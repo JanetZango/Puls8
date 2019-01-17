@@ -38,6 +38,8 @@ display;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
+
+    
     this.arrMssg.length = 0;
     
 

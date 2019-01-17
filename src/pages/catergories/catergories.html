@@ -3,7 +3,7 @@
       <ion-item class="dropdown" no-lines>
           <ion-label class="dropdown--text">Filter By:</ion-label>
           <ion-select name="genre" [(ngModel)]="genre" multiple="false" (ionChange)="input()" interface="popover">
-              <ion-option selected disabled>Genre</ion-option>
+              <ion-option value="Genre"selected disabled>Genre</ion-option>
             <ion-option value="House">House</ion-option>
             <ion-option value="Hip-Hop">Hip-Hop</ion-option>
             <ion-option value="Rap">Rap</ion-option>
@@ -15,18 +15,18 @@
             <ion-option value="Soul">Soul</ion-option>
           </ion-select>
           <ion-select [(ngModel)]="gender" (ionChange)="input()" interface="popover">
-              <ion-option value="House" selected disabled>Gender</ion-option>
+              <ion-option value="Gender" selected disabled>Gender</ion-option>
 
             <ion-option checked="true" value="Male">Male</ion-option>
             <ion-option value="Female">Female</ion-option>
           </ion-select>
           <ion-select [(ngModel)]="city" (ionChange)="input()" interface="popover">
-              <ion-option value="House" selected disabled>City</ion-option>
+              <ion-option value="City" selected disabled>City</ion-option>
 
             <ion-option value="Johannesburg">Johannesburg</ion-option>
             <ion-option value="Pretoria">Pretoria</ion-option>
             <ion-option value="Cape Town">Cape Town</ion-option>
-            <ion-option value="limpopo">limpopo</ion-option>
+            <ion-option value="Polokwane">Polokwane</ion-option>
             <ion-option value="Durban">Durban</ion-option>
             <ion-option value="Mafikeng">Mafikeng</ion-option>
             <ion-option value="Bloemfontein">Bloemfontein</ion-option>

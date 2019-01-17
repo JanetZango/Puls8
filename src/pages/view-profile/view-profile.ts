@@ -46,6 +46,7 @@ export class ViewProfilePage {
   obj;
   genre;
   userStatus;
+  status=false;
   
   date = new Date();
 
@@ -122,7 +123,8 @@ export class ViewProfilePage {
 
     })
 
-    
+   
+   
 
   }
 
@@ -142,9 +144,13 @@ export class ViewProfilePage {
           
         this.userid =firebase.auth().currentUser.uid;
 
+        if(this.userid == this.key){
+          this.status=true;   
+        }else{
     
-       
-
+          this.status=false;
+        }
+      
         if(this.obj==undefined){
 
           this.id = this.key;
@@ -543,11 +549,14 @@ export class ViewProfilePage {
     if(this.condition==true)
     {
       if(this.userid == this.key){
+
+
+
         const toast = this.toastCtrl.create({
           message: 'You cannot Request Booking for yourself',
           duration: 3000
         });
-        toast.present();
+       
         this.navCtrl.push(CatergoriesPage);
 
 

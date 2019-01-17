@@ -188,7 +188,9 @@ back(){
 
 
 edit(){
-  this.navCtrl.push(EditUserProfilePage);
+
+  const modal = this.modalCtrl.create(EditUserProfilePage);
+  modal.present();
 }
 
 changeRole()
@@ -224,6 +226,8 @@ chat(i)
 {
 
   //alert(this.id)
+
+  
 
   this.navCtrl.push(ChatroomPage,{obj:i,objk:this.id});
 }
