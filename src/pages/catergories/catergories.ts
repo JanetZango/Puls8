@@ -47,7 +47,7 @@ export class CatergoriesPage {
   gender;
   city;
 
-  
+  isSet = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public db: DatabaseProvider,public toastCtrl: ToastController) {
     this.categoriesArr= this.db.categories();
@@ -124,7 +124,7 @@ export class CatergoriesPage {
       console.log(this.role +"  "+ genre);
       if(this.role=="Dj"){
         
-        if(genre!= null && stagename!=null&& genre!=='None'&& price>=100){    
+        if(genre!= null && stagename!=null){    
            console.log("dj" + k + stagename )
          this.objDj ={
           role:this.role,
@@ -234,8 +234,8 @@ export class CatergoriesPage {
 
   profilePage()
   {
-    
 
+    
     if(this.condition==true)
       {
         let userKey = firebase.auth().currentUser.uid;
@@ -256,14 +256,10 @@ export class CatergoriesPage {
             console.log(this.role);
             if(this.role=='Audience')
             {
-              this.navCtrl.push(UserProfilePage);
-            }
-            else if(this.role=='Dj'){
-              this.navCtrl.push(ProfilePage);
+             this.navCtrl.push(UserProfilePage);
             }
             else{
-              console.log('Please log in');
-              
+              this.navCtrl.push(ProfilePage);
             }
 
             
@@ -307,7 +303,140 @@ export class CatergoriesPage {
 
    input()
    {
+     this.isSet = true;
+
+     if(this.city==null && this.genre==null && this.gender==null){
+       this.city=undefined;
+       this.gender=undefined;
+       this.genre=undefined;
+       
+     }
+     
     this.arrDj.length=0;
+
+    this.db.retrieveProfile().on("value", (data) => {
+             let profile = data.val();
+              let key = Object.keys(profile);
+             console.log(key);
+             console.log(profile);
+
+     for(var i = 0; i <key.length; i++)
+         {
+              let k = key[i];
+              let stagename = profile[k].stagename
+              this.role=profile[k].role;
+               let genre = profile[k].genre;
+               let price = profile[k].price;
+               let payment = profile[k].payment;
+               let gender = profile[k].gender;
+               let city =profile[k].city
+
+            console.log(this.role +"  "+ genre);
+      if(this.role=="Dj"){
+             if(genre!= null && stagename!=null ){
+                console.log("dj" + k + stagename )
+               let objDj ={
+               role:this.role,
+               stagename:stagename,
+                genre:genre,
+                url:this.globalPic[i],
+                price:price,
+                payment:payment,
+                key:k,
+                gender:gender,
+                city:city
+
+  }   
+      console.log(objDj);
+      
+      this.arrDj.push(objDj);
+      if(this.genre!==undefined){
+    
+        this.arrDj = this.arrDj.filter(x => x.genre === this.genre);
+
+        if(this.gender!==undefined){
+
+          this.arrDj = this.arrDj.filter(x => x.gender === this.gender);
+          if(this.city!==undefined){
+            this.arrDj = this.arrDj.filter(x => x.city === this.city);
+          } 
+         
+            } 
+               {
+         
+                }
+       
+      }
+
+      if(this.city!==undefined){
+    
+        this.arrDj = this.arrDj.filter(x => x.city === this.city);
+
+        if(this.gender!==undefined){
+
+          this.arrDj = this.arrDj.filter(x => x.gender === this.gender);
+          if(this.genre!==undefined){
+            this.arrDj = this.arrDj.filter(x => x.genre === this.genre);
+
+          } 
+         
+            } 
+               {
+         
+                }
+                
+       
+      }
+
+      if(this.gender!==undefined){
+    
+        this.arrDj = this.arrDj.filter(x => x.gender === this.gender);
+        if(this.genre!==undefined){
+          this.arrDj = this.arrDj.filter(x => x.genre === this.genre);
+          if(this.city!==undefined){
+    
+            this.arrDj = this.arrDj.filter(x => x.city === this.city);
+          }
+        } 
+      }
+    
+      if(this.gender!==undefined){
+    
+        this.arrDj = this.arrDj.filter(x => x.gender === this.gender);
+       
+          if(this.city!==undefined){
+
+            if(this.genre!==undefined){
+              this.arrDj = this.arrDj.filter(x => x.genre === this.genre);
+    
+            this.arrDj = this.arrDj.filter(x => x.city === this.city);
+          }
+        } 
+      }
+
+      
+
+   }
+         else{
+               console.log("no stage name or genre"+k)
+             }
+
+             }
+
+          else{
+                console.log("audience"+k)
+             }
+
+             }
+     });
+
+       console.log(this.arrDj);
+       }
+
+       refreshs(){
+      
+
+        this.arrDj.length=0;
 
     this.db.retrieveProfile().on("value", (data) => {
              let profile = data.val();
@@ -425,14 +554,11 @@ export class CatergoriesPage {
              }
      });
 
-       console.log(this.arrDj);
-       }
+     this.city=null;
+     this.gender=null;
+     this.genre=null;
 
-      
-      
+     this.isSet = false;
       }
       
-
-    
-  
-  
+      }

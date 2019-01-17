@@ -54,6 +54,8 @@ export class ProfilePage {
   commentusername;
   commentnum;
 
+  messagestate = 'not sending';
+
   displayMsg = " Would like to book you for an event,please respond to the email sent. ";
 
 
@@ -85,57 +87,68 @@ export class ProfilePage {
         firebase.database().ref("comments/"+ this.id).on("value",(data: any)=>{
           let commentsinfor = data.val();
           console.log("this are the comments");
-          console.log(commentsinfor)
-          var keys = Object.keys(commentsinfor);
-          
-          for(let i = 0; i< keys.length;++i){
-            let k = keys[i];
-            this.commentuserid=commentsinfor[k].uid
-    
-            firebase.database().ref('Registration/' + this.commentuserid).on('value', (data: any) => {
-              var commentinfor = data.val();
-              this.commentusername = commentinfor.fullname;
-              console.log("user name  //////" + this.commentusername);
-              if( commentsinfor == undefined){
-                this.commentnum = 0;
-              }else{
-                this.commentnum = i+1;
-              }
-              console.log(this.commentnum)
-            })
-    
-            console.log("comment user id ////" +this.commentuserid);
-            firebase.database().ref('Pic/' + this.commentuserid).on('value', (data) => {
-              var infor = data.val();
-              this.commentuserpic = infor.url;
-            let a  = Object.keys(infor);
-            console.log(" this is the pic"+this.commentuserpic);
+          console.log( commentsinfor);
         
-            }, (error) => {
-        
-              console.log(error.message);
+          if(data.val() != null ||data.val() != undefined ){
+
+            console.log(commentsinfor)
+            var keys = Object.keys(commentsinfor);
             
-        
-        
-            });
-        
-    
-            let objc = { 
-              comment: commentsinfor[k].comment,
-              uid:commentsinfor[k].uid,
-              date: moment(commentsinfor[k].date, 'MMMM Do YYYY, h:mm:ss a').startOf('minutes').fromNow(),
-              pic:this.commentuserpic,
-              name:this.commentusername
-                      }
-                      console.log("this is the object")
-                      console.log(objc);
-                      
-                this.commentArr.push(objc);
-                this.commentArr.reverse();
+            for(let i = 0; i< keys.length;++i){
+              let k = keys[i];
+              this.commentuserid=commentsinfor[k].uid
+      
+              firebase.database().ref('Registration/' + this.commentuserid).on('value', (data: any) => {
+                var commentinfor = data.val();
                 
-                 
+                if(data.val() != null ||data.val()!= undefined){
+                  this.commentusername = commentinfor.fullname;
+                  console.log("user name  //////" + this.commentusername);
+                  if( commentsinfor == undefined){
+                    this.commentnum = 0;
+                  }else{
+                    this.commentnum = i+1;
+                  }
+                  console.log(this.commentnum)
+                }
+            
+              })
+      
+              // console.log("comment user id ////" +this.commentuserid);
+              // firebase.database().ref('Pic/' + this.commentuserid).on('value', (data) => {
+              //   var infor = data.val();
+              //   this.commentuserpic = infor.url;
+              // let a  = Object.keys(infor);
+              // console.log(" this is the pic"+this.commentuserpic);
+          
+              // }, (error) => {
+          
+              //   console.log(error.message);
+              
+          
+          
+              // });
+          
+      
+              let objc = { 
+                comment: commentsinfor[k].comment,
+                uid:commentsinfor[k].uid,
+                date: moment(commentsinfor[k].date, 'MMMM Do YYYY, h:mm:ss a').startOf('minutes').fromNow(),
+                // pic:this.commentuserpic,
+                name:this.commentusername
+                        }
+                        console.log("this is the object")
+                        console.log(objc);
+                        
+                  this.commentArr.push(objc);
+                  this.commentArr.reverse();
+              
                   
+                   
+                    
+            }
           }
+       
     
         })
     
@@ -491,7 +504,8 @@ export class ProfilePage {
 
 
   edit() {
-    this.navCtrl.push(EditPage);
+    const modal = this.modalCtrl.create(EditPage);
+    modal.present();
   }
 
   upload() {
@@ -509,14 +523,14 @@ export class ProfilePage {
       firebase.auth().signOut().then(() => {
         // Sign-out successful.
         console.log(" Sign-out successful");
-        this.navCtrl.push(LoginPage);
+        this.navCtrl.setRoot(CatergoriesPage);
       }).catch(function (error) {
         // An error happened.
         console.log(error);
       });
     }
     else {
-      this.navCtrl.push(CatergoriesPage);
+      this.navCtrl.setRoot(CatergoriesPage);
     }
 
 
@@ -538,38 +552,20 @@ export class ProfilePage {
    console.log("working current user " + this.keyid + " bookingID "+this.key);
  
   }
-  // changes(){
   
-  //         this.navCtrl.push(UserProfilePage);
-  //         this.role = "Audience";
+  onMessageAdded(messagedata){
+    //todo: functionality of sending message goes here
+   this.commentArr =[];
+    var user = ""
+    var day = moment().format('MMMM Do YYYY, h:mm:ss a');
+    firebase.database().ref('comments/' +      this.id).push({
+      comment: messagedata,
+      uid:      this.id,
+      date: day,
+      
+    })
+   this.messagestate = 'not sending';
 
-  //         let obj = {
-  //           role:this.role
-  //        }
-  //         this.db.update(this.id,obj);
-         
-  // }
-  // change(){
-  //       console.log(this.id);
-
-   
-
-  //         let obj = {
-  //            role:this.role
-  //         }
-  //         this.db.update(this.id,obj);
-
-  //         if(this.role=='Audience')
-  //         {
-
-  //          // this.navCtrl.push(UserProfilePage);
-  //         }
-        
-
-  //         console.log(this.role);
-  
-
-
-  // }
+  }
   
 }

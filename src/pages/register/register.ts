@@ -48,38 +48,49 @@ export class RegisterPage {
     });
     loading.present();
 
-    this.db.registerUser(form.value.email, form.value.password).then(data => {
-      let userID = firebase.auth().currentUser.uid;
-        this.registrationObj = {
-          fullname: form.value.fullname,
-          password: form.value.password,
-          email: form.value.email,
-          role:'Audience',
-          genre:"No Genre"
-      
-      }
-    
-      firebase.database().ref("Registration/" + userID).set(this.registrationObj).then(()=>{
-        
-        firebase
-        .database()
-        .ref("Pic/" + userID)
-        .set({
-          url: this.url
-        }).then(()=>{
-          this.navCtrl.setRoot(CatergoriesPage);
-        })
-        
+    if (form.value.email == "" || form.value.email == undefined){
+      const alert = this.alertCtrl.create({
+        title: 'Reminder,',
+        subTitle: 'Your email cannot be left empty',
+        buttons: ['OK']
       });
-      loading.dismiss();
+      alert.present();
+    }
+    else{
+      this.db.registerUser(form.value.email, form.value.password).then(data => {
+        let userID = firebase.auth().currentUser.uid;
+          this.registrationObj = {
+            fullname: form.value.fullname,
+            password: form.value.password,
+            email: form.value.email,
+            role:'Audience',
+            genre:"No Genre"
+        
+        }
       
-    }).catch((error)=>{
-      console.log(error);
-      loading.dismiss();
-      //check if the email already exists
-      if(error.code == 'auth/email-already-in-use'){
-        this.navCtrl.push(LoginPage);
-      }
-    })
+        firebase.database().ref("Registrations/" + userID).set(this.registrationObj).then(()=>{
+          
+          firebase
+          .database()
+          .ref("Pic/" + userID)
+          .set({
+            url: this.url
+          }).then(()=>{
+            this.navCtrl.setRoot(CatergoriesPage);
+          })
+          
+        });
+        loading.dismiss();
+        
+      }).catch((error)=>{
+        console.log(error);
+        loading.dismiss();
+        //check if the email already exists
+        if(error.code == 'auth/email-already-in-use'){
+          this.navCtrl.push(LoginPage);
+        }
+      })
+    }
+
   }
 }

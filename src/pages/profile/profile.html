@@ -1,15 +1,12 @@
 <ion-content>
     <div class="hero">
-        <button ion-button clear  class="hero__back">
-            <ion-icon (click)="back()" style="zoom: 1.5;" ios="ios-arrow-round-back" md="md-arrow-round-back"></ion-icon>
-        </button>
         <div class="hero__herobanner">
             <div class="hero__herobanner__heroimagecontainer">
                 <img [src]="pic" alt="" class="hero__herobanner__heroimagecontainer--image">
             </div>
             <div class="hero__herobanner__herotagcontainer">
                 <div class="hero__herobanner__herotagcontainer__headingcontainer">
-                    <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">{{fullname}}</h1>
+                    <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">{{fullname | slice:0:20}}</h1>
                     <span class="buttoncontainer">
                         <button ion-button icon-only (click)="edit()">
                             <ion-icon ios="ios-create" md="md-create"></ion-icon>
@@ -54,9 +51,15 @@
             <div class="nocontent" *ngIf="trackarray.length == 0 || trackarray.length == undefined">
                 <div class="nocontent__contents">
                     <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
-                    <p class="nocontent__contents--text" style="color: white">Its lonely here...</p>
+                    <p class="nocontent__contents--text" style="color: white">No Music Uploads</p>
                 </div>
             </div>
+
+            <ion-fab right bottom>
+                <button ion-fab color="primary" (click)="logout()">
+                    <ion-icon name="log-out"></ion-icon>
+                </button>
+            </ion-fab>
         </ion-list>
 
         <ion-list *ngSwitchCase="'infor'" class="segcontainer__seg">
@@ -68,7 +71,7 @@
                 <div class="nocontent1" *ngIf="z.bio == '' || z.bio == undefined">
                     <div class="nocontent1__contents">
                         <img class="nocontent1__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
-                        <p class="nocontent1__contents--text" style="color: white">Its lonely here...</p>
+                        <p class="nocontent1__contents--text" style="color: white">Update BIO</p>
                     </div>
                 </div>
             </div>
@@ -86,6 +89,12 @@
                     </p>
                 </div>
             </div>
+
+            <ion-fab right bottom>
+                <button ion-fab color="primary" (click)="logout()">
+                    <ion-icon name="log-out"></ion-icon>
+                </button>
+            </ion-fab>
         </ion-list>
 
         <ion-list *ngSwitchCase="'bookings'" class="segcontainer__seg">
@@ -115,14 +124,20 @@
             <div class="nocontent" *ngIf="bookingArr.length == 0 || bookingArr.length == undefined">
                 <div class="nocontent__contents">
                     <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
-                    <p class="nocontent__contents--text" style="color: white">Its lonely here...</p>
+                    <p class="nocontent__contents--text" style="color: white">No Messages</p>
                 </div>
             </div>
+
+            <ion-fab right bottom>
+                <button ion-fab color="primary" (click)="logout()">
+                    <ion-icon name="log-out"></ion-icon>
+                </button>
+            </ion-fab>
         </ion-list>
 
         <ion-list *ngSwitchCase="'reviews'" class="segcontainer__seg">
         
-            <div class="commentslist">
+            <div class="commentslist" *ngIf="commentArr.length > 0">
                 <div class="chatBubble" *ngFor="let n of commentArr; let i = index; let odd = 'left'; let even = 'right'">
                     <!-- <img class="profile-pic even" src="{{n.pic}}"> -->
                     <div class="chat-bubble left">
@@ -134,21 +149,22 @@
                     </div>
                 </div>
 
-                <div class="block"></div>
+                <div class="block">&nbsp;</div>
             </div>
             
-            <div class="nocontent" *ngIf="bookingArr.length == 0 || bookingArr.length == undefined">
+            <div class="nocontent" *ngIf="commentArr.length == 0 || commentArr.length == undefined">
                 <div class="nocontent__contents">
                     <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
-                    <p class="nocontent__contents--text" style="color: white">Its lonely here...</p>
+                    <p class="nocontent__contents--text" style="color: white">No Comments</p>
                 </div>
             </div>
+
+            <button ion-button icon-only *ngIf="messagestate != 'sending'" class="comment" (click)="messagestate = 'sending'">
+                <ion-icon name="chatbubbles"></ion-icon>
+            </button>
+            <chatbox (messageCreate)="onMessageAdded($event)" *ngIf="messagestate == 'sending'"></chatbox>
         </ion-list>
 
-        <ion-fab right bottom>
-            <button ion-fab color="primary" (click)="logout()">
-                <ion-icon name="log-out"></ion-icon>
-            </button>
-        </ion-fab>
+
     </div>
 </ion-content>

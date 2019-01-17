@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
-import { IdentityPage } from '../identity/identity';
 import { DatabaseProvider } from '../../providers/database/database';
 import firebase from "firebase";
 import { NgForm } from "@angular/forms";
 import { CatergoriesPage } from '../catergories/catergories';
 import { RegisterPage } from '../register/register';
-import { IfObservable } from '../../../node_modules/rxjs/observable/IfObservable';
-import { BookingsPage } from '../bookings/bookings';
 /**
  * Generated class for the LoginPage page.
  *
@@ -56,7 +53,7 @@ export class LoginPage {
         let userID = firebase.auth().currentUser.uid;
         loading.dismiss();
      
-                this.navCtrl.push(CatergoriesPage);
+                this.navCtrl.setRoot(CatergoriesPage);
           
       })
       .catch(error => {
