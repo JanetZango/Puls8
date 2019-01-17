@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import firebase from 'firebase';
 import { HomePage } from '../pages/home/home';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+
 @Component({
   templateUrl: 'app.html'
 })

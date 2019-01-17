@@ -1,24 +1,27 @@
 <ion-content>
-    <div class="buttonbox">
-        <button class="delete" color="danger" ion-button icon-only (click)=" remove()">
-            <ion-icon name="trash"></ion-icon>
-        </button>
+    <div class="iconcontainer">
+
+        <!-- <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="contentflex__iconcontainer__icon">  -->
+        <img [src]="url" *ngIf="url != null" width="150" height="150" style="border:1px solid whitesmoke;border-radius: 50%;"
+            alt="" class="iconcontainer__icon">
+        <!-- <input type="file" #image (change)="insertImage($event)">  -->
+
+        <div class="buttonbox">
+            <button class="delete" color="danger" ion-button icon-only (click)=" remove()">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+        </div>
+        <div class="button">
+            <div class="upload-btn-wrapper">
+                <button class="btn">Edit Image</button>
+                <input type="file" (change)="insertImage($event)" />
+            </div>
+        </div>
+
     </div>
-    <div class="upload-btn-wrapper">
-        <button class="btn">Edit Image</button>
-        <input type="file" (change)="insertImage($event)" />
-    </div>
+
     <form #f="ngForm" (ngSubmit)="submit(f)">
         <div class="contentflex">
-            <div class="contentflex__iconcontainer">
-
-               <!-- <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="contentflex__iconcontainer__icon">  -->
-               <img [src]="url" *ngIf="url != null" width="150" height="150" style="border:1px solid whitesmoke;border-radius: 50%;"
-                    alt="" class="contentflex__iconcontainer__icon"> -->
-               <!-- <input type="file" #image (change)="insertImage($event)">  -->
-        
-
-           </div>
             <div class="contentflex__formcontent">
                 <ion-item no-lines>
                     <ion-label color="light">
@@ -40,8 +43,8 @@
                     <ion-label color="light">
                         <ion-icon name="contact"></ion-icon>
                     </ion-label>
-                    <ion-input type="name" maxlength="20" minlength="3" name="stagename" [value]="stagename" placeholder="Stage Name" class="contentflex__formcontent--input"
-                        id="input" ngModel required></ion-input>
+                    <ion-input type="name" maxlength="20" minlength="3" name="stagename" [value]="stagename"
+                        placeholder="Stage Name" class="contentflex__formcontent--input" id="input" ngModel required></ion-input>
                 </ion-item>
 
                 <ion-item no-lines>
@@ -63,7 +66,7 @@
                     </ion-label>
 
                     <ion-select name="genre" [(ngModel)]="genre" multiple="false" interface="popover">
-                   
+
                         <ion-option value="House">House</ion-option>
                         <ion-option value="Hip-Hop">Hip-Hop</ion-option>
                         <ion-option value="Rap">Rap</ion-option>
@@ -84,7 +87,7 @@
                         <ion-icon name="cash"></ion-icon>
                     </ion-label>
                     <ion-input type="number" name="price" [value]="price" placeholder="price" class="contentflex__formcontent--input"
-                        id="price" ngModel min="500" max="5000"maxlength="4" minlength="3" required></ion-input>
+                        id="price" ngModel min="500" max="5000" maxlength="4" minlength="3" required></ion-input>
                 </ion-item>
 
 
@@ -142,18 +145,18 @@
                     <ion-label color="light">
                         <ion-icon name="contact"></ion-icon>
                     </ion-label>
-                    <ion-textarea  minlength="10" type="name" name="bio" placeholder="Bio" [value]="bio"
-                        class="contentflex__formcontent--input" id="input" ngModel required></ion-textarea>
+                    <ion-textarea minlength="10" type="name" name="bio" placeholder="Bio" [value]="bio" class="contentflex__formcontent--input"
+                        id="input" ngModel required></ion-textarea>
                 </ion-item>
 
 
             </div>
-            <div class="contentflex__buttoncontent"> 
-                
-               <!-- creating the submission button for the form 
+            <div class="contentflex__buttoncontent">
+
+                <!-- creating the submission button for the form 
       [disabled]="!f.valid" will make the button not work unless valid data is entered
       type="submit" triggers the ngsubmit method -->
-               <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Save</button>
+                <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Save</button>
 
             </div>
         </div>
