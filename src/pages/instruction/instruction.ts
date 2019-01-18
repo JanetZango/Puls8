@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { EditPage } from '../edit/edit';
 import { UserProfilePage } from '../user-profile/user-profile';
 
@@ -17,7 +17,7 @@ import { UserProfilePage } from '../user-profile/user-profile';
 })
 export class InstructionPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
   }
 
   ionViewDidLoad() {
@@ -25,9 +25,11 @@ export class InstructionPage {
   }
   ready(){
     this.navCtrl.push(EditPage);
+    this.viewCtrl.dismiss();
   }
   back(){
-    this.navCtrl.push(UserProfilePage);
+    this.navCtrl.push(UserProfilePage).then
+    
   }
 
 }

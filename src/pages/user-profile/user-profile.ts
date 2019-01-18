@@ -137,7 +137,7 @@ massage;
           let userDetails = data.val();
           console.log('userProfile');
           
-          console.log(userDetails.gender);
+          console.log(userDetails.role);
           
          
           if (userDetails != null && userDetails != '') {
@@ -197,6 +197,7 @@ changeRole()
 {
   
     const modal = this.modalCtrl.create(InstructionPage);
+    this.navCtrl.pop();
     modal.present();
 }
 

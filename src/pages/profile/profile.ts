@@ -86,19 +86,27 @@ status;
         this.id = firebase.auth().currentUser.uid;
 
         firebase.database().ref("comments/"+ this.id).on("value",(data: any)=>{
+         console.log(data);
+         
+
+       
+
+         
           let commentsinfor = data.val();
+
           console.log("this are the comments");
           console.log( commentsinfor);
 
-          if(commentsinfor.length == 0){
-
-           this.status=true;
-
-          }else{
-            this.status=false;
-          }
+          
         
           if(data.val() != null ||data.val() != undefined ){
+            if(commentsinfor.length == 0){
+
+              this.status=true;
+   
+             }else{
+               this.status=false;
+             }
 
             console.log(commentsinfor)
             var keys = Object.keys(commentsinfor);
@@ -158,7 +166,7 @@ status;
             }
           }
        
-    
+        
         })
     
 

@@ -33,7 +33,7 @@ export class EditPage {
   rate;
   gender;
   id;
-  url= "../../assets/imgs/user.png";
+  url = "../../assets/imgs/user.png";
   profileObj = {};
   constructor(
     public navCtrl: NavController,
@@ -45,30 +45,30 @@ export class EditPage {
   ) {
 
   }
-  ionViewDidLoad(){
+  ionViewDidLoad() {
     console.log("ViewLoad");
 
     this.id = firebase.auth().currentUser.uid;
-    firebase.database().ref('Registration/'+this.id).on("value",data=>{
+    firebase.database().ref('Registration/' + this.id).on("value", data => {
       console.log(data.val());
       let infor = data.val();
       this.fullname = infor.fullname;
       this.stagename = infor.stagename;
-      this.city= infor.city;
-      this.price=infor.price;
+      this.city = infor.city;
+      this.price = infor.price;
       this.payment = infor.payment;
       this.bio = infor.bio;
-      this.genre=infor.genre;
-      this.gender= infor.gender;
-       this.email = infor.email
+      this.genre = infor.genre;
+      this.gender = infor.gender;
+      this.email = infor.email
 
     })
 
-    firebase.database().ref("Pic/" + this.id).on('value',data=>{
+    firebase.database().ref("Pic/" + this.id).on('value', data => {
       let picInfor = data.val();
       console.log(picInfor.url);
-      if ( picInfor != null &&  picInfor != "") {
-        this.url =  picInfor.url;
+      if (picInfor != null && picInfor != "") {
+        this.url = picInfor.url;
       } else {
       }
     })
@@ -86,68 +86,103 @@ export class EditPage {
     }
   }
 
-  submit(form:NgForm){
-    const loader = this.loadingCtrl.create({
-      content: "Saving Information...",
-    
-    });
-    loader.present();
+  submit(form: NgForm) {
 
-    if(form.value.price >= 1  && form.value.price <=5000){
+    const mDb = firebase.database();
 
-    firebase.database().ref('Registration/'+this.id).update({
-      fullname: form.value.fullname,
-      email: form.value.email,
-      stagename: form.value.stagename,
-      bio: form.value.bio,
-      city: form.value.city,
-      genre: form.value.genre,
-      role: "Dj",
-      price:form.value.price,
-      gender: form.value.gender,
-      payment:form.value.payment
-    })
-    firebase
-    .database()
-    .ref("Pic/" + this.id)
-    .set({
-      url: this.url
-    })
-   
-   
-    
-      this.navCtrl.popTo(ProfilePage);
+    if (form.value.price >= 1 && form.value.price <= 5000) {
+      const loader = this.loadingCtrl.create({
+        content: "Saving Information...",
 
-  }else{
-    const prompt = this.alertCtrl.create({
-      title: 'Caution',
-      message: "The amount you have entered cannot be greater than R5000.00",
-      buttons: [
-        {
-          text: 'OK',
-          handler: data => {
+      });
+      loader.present();
 
-            console.log('price');
-            console.log(form.value.price);
-            form.value.price = 0;
-            console.log(form.value.price);
-          }
-        },
-      ]
-    });
-    prompt.present();
+      let myForm = {
+        fullname: form.value.fullname,
+        email: form.value.email,
+        stagename: form.value.stagename,
+        bio: form.value.bio,
+        city: form.value.city,
+        genre: form.value.genre,
+        role: "Dj",
+        price: form.value.price,
+        gender: form.value.gender,
+        payment: form.value.payment
+      }
+
+      mDb.ref('Registration/' + this.id).update(myForm).then(() => {
+        mDb.ref("Pic/" + this.id)
+          .set({
+            url: this.url
+          }).then(() => {
+            this.navCtrl.pop();
+            loader.dismiss();
+          })
+      }).catch(err => {
+        loader.dismiss();
+      })
+
+
+      // firebase.database().ref('Registration/' + this.id).update({
+      //   fullname: form.value.fullname,
+      //   email: form.value.email,
+      //   stagename: form.value.stagename,
+      //   bio: form.value.bio,
+      //   city: form.value.city,
+      //   genre: form.value.genre,
+      //   role: "Dj",
+      //   price: form.value.price,
+      //   gender: form.value.gender,
+      //   payment: form.value.payment
+      // }).then(() => {
+      //   loader.dismiss();
+      //   this.navCtrl.pop();
+      // }).catch(err => {
+      //   loader.dismiss();
+      // })
+
+      // firebase
+      //   .database()
+      //   .ref("Pic/" + this.id)
+      //   .set({
+      //     url: this.url
+      //   }).then(() => {
+      //     loader.dismiss();
+      //     this.navCtrl.pop();
+      //   }).catch(err => {
+      //     loader.dismiss();
+      //   })
+
+    } else {
+      const prompt = this.alertCtrl.create({
+        title: 'Caution',
+        message: "The amount you have entered cannot be greater than R5000.00",
+        buttons: [
+          {
+            text: 'OK',
+            handler: data => {
+
+              console.log('price');
+              console.log(form.value.price);
+              form.value.price = 0;
+              console.log(form.value.price);
+            }
+          },
+        ]
+      });
+      prompt.present();
+    }
+
+
   }
-  loader.dismiss();
-
-  }
-  remove(){
-    this.url= "../../assets/imgs/user.png";
+  remove() {
+    this.url = "../../assets/imgs/user.png";
     firebase
-    .database()
-    .ref("Pic/" + this.id)
-    .set({
-      url: this.url
-    })
+      .database()
+      .ref("Pic/" + this.id)
+      .set({
+        url: this.url
+      })
   }
 
 

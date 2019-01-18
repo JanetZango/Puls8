@@ -4,6 +4,7 @@ import { UserProfilePage } from '../user-profile/user-profile';
 import firebase from "firebase";
 import { DatabaseProvider } from '../../providers/database/database';
 import { NgForm } from '../../../node_modules/@angular/forms';
+import { CatergoriesPage } from '../catergories/catergories';
 /**
  * Generated class for the EditUserProfilePage page.
  *
@@ -61,6 +62,7 @@ export class EditUserProfilePage {
       this.genre=infor.genre;
       this.gender= infor.gender;
        this.email = infor.email
+       this.role = infor.role 
 
     })
 
@@ -110,7 +112,9 @@ export class EditUserProfilePage {
     })
  
     loader.dismiss();
-      this.navCtrl.popTo(UserProfilePage);
+    
+      
+
 
 
   }
